@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Modules & Permissions</title>
+</head>
+<body>
+
+<div class="container">
+    <h2>Assigned Modules & Permissions</h2>
+    {% if modules_permissions %}
+        <ul>
+            {% for module, permissions in modules_permissions.items() %}
+                <li>
+                    <strong>{{ module }}</strong>
+                    <ul>
+                        {% for permission in permissions %}
+                            <li>{{ permission }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No modules and permissions assigned to this user.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

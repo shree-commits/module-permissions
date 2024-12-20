@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+        .menu-item {
+            position: relative;
+        }
+        .menu a {
+            text-decoration: none;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .menu a:hover {
+            background-color: #45a049;
+        }
+        .submenu {
+            display: none;
+            flex-direction: column;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .submenu a {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .submenu a:hover {
+            background-color: #ddd;
+        }
+        .menu-item:hover .submenu {
+            display: flex;
+        }
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            text-align: center;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Welcome, {{ user }}!</h2>
+
+    <div class="menu">
+        <!-- User Management Menu with Submenu -->
+        <div class="menu-item">
+            <a href="#">User Management</a>
+            <div class="submenu">
+                <a href="{{ url_for('view_users') }}">View Users</a>
+                <a href="{{ url_for('add_user') }}">Add User</a>
+                <!-- Passing actual user_id here -->
+                <a href="{{ url_for('edit_user', user_id=user_id) }}">Edit User</a>
+                <a href="{{ url_for('delete_user', user_id=user_id) }}">Delete User</a>
+                <a href="{{ url_for('assign_roles') }}">Assign Roles</a>
+            </div>
+        </div>
+
+        <!-- Customer Management Menu with Submenu -->
+        <div class="menu-item">
+            <a href="#">Customer Management</a>
+            <div class="submenu">
+                <a href="{{ url_for('view_customers') }}">View Customers</a>
+                <a href="{{ url_for('add_customer') }}">Add Customer</a>
+                <!-- Loop over customers and pass customer_id for editing and deleting -->
+                {% for customer in customers %}
+                    <a href="{{ url_for('edit_customer', customer_id=customer.customer_id) }}">Edit {{ customer.first_name }} {{ customer.last_name }}</a>
+                    <a href="{{ url_for('delete_customer', customer_id=customer.customer_id) }}">Delete {{ customer.first_name }} {{ customer.last_name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+		<!-- Sales Management Menu with Submenu -->
+		<div class="menu-item">
+			<a href="#">Sales Management</a>
+			<div class="submenu">
+				<a href="{{ url_for('view_sales') }}">View Sales</a>
+				<a href="{{ url_for('create_sales') }}">Create Sales</a>
+				
+				<!-- Loop over sales orders and generate links for editing and deleting sales -->
+				{% for sale in sales %}
+					<a href="{{ url_for('edit_sales', order_id=sale.order_id) }}">Edit Sale {{ sale.order_id }}</a>
+					<a href="{{ url_for('delete_sales', order_id=sale.order_id) }}">Delete Sale {{ sale.order_id }}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+
+        <!-- Link for Assigned Modules & Permissions -->
+        <a href="{{ url_for('view_modules_permissions') }}">View Assigned Modules & Permissions</a>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="back-button">Back to Login</a>
+</div>
+
+</body>
+</html>

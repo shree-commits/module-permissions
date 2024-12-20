@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Sale</title>
+</head>
+<body>
+    <h2>Edit Sale</h2>
+
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }}">
+                {{ messages[0][1] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="order_id">Order ID:</label>
+        <input type="text" name="order_id" value="{{ sale.order_id }}" readonly><br>
+
+        <label for="customer_id">Customer:</label>
+        <select name="customer_id" required>
+            {% for customer in customers %}
+                <option value="{{ customer.customer_id }}" {% if customer.customer_id == sale.customer_id %} selected {% endif %}>
+                    {{ customer.first_name }} {{ customer.last_name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="total_amount">Total Amount:</label>
+        <input type="number" name="total_amount" value="{{ sale.total_amount }}" required><br>
+
+        <label for="status">Status:</label>
+        <select name="status" required>
+            <option value="Pending" {% if sale.status == 'Pending' %} selected {% endif %}>Pending</option>
+            <option value="Shipped" {% if sale.status == 'Shipped' %} selected {% endif %}>Shipped</option>
+            <option value="Completed" {% if sale.status == 'Completed' %} selected {% endif %}>Completed</option>
+        </select><br>
+
+        <button type="submit">Update Sale</button>
+    </form>
+
+    <a href="{{ url_for('view_sales') }}">Back to Sales List</a>
+</body>
+</html>
